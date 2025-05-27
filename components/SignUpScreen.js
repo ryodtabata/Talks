@@ -132,24 +132,46 @@ const SignUpScreen = () => {
         <TextInput placeholder="Confirm Password" value={confirmPass} onChangeText={setConfirmPass} style={styles.input} secureTextEntry />
 
         <Pressable onPress={toggleDatePicker} style={styles.dateButton}>
-       <Text style={styles.dateButtonText}>
-        {isDateSelected
-        ? date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })
-        : "Select Birthdate"}
-    </Text>
-  </Pressable>
+          <Text style={styles.dateButtonText}>
+            {isDateSelected
+              ? date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })
+              : "Select Birthdate"}
+          </Text>
+        </Pressable>
 
         {showPicker && (
-          <DateTimePicker
-            mode="date"
-            display="spinner"
-            value={date} // Always a valid Date object
-            onChange={onChange}
-          />
+          Platform.OS === "web" ? (
+            <input
+              type="date"
+              value={date.toISOString().split("T")[0]}
+              onChange={e => {
+                const selectedDate = new Date(e.target.value);
+                setDate(selectedDate);
+                setIsDateSelected(true);
+                setShowPicker(false);
+              }}
+              style={{
+                marginTop: 10,
+                padding: 10,
+                borderRadius: 10,
+                borderColor: "#ccc",
+                borderWidth: 1,
+                width: "100%",
+              }}
+            />
+          ) : (
+            <DateTimePicker
+              mode="date"
+              display={Platform.OS === "ios" ? "spinner" : "default"}
+              value={date}
+              onChange={onChange}
+              style={Platform.OS === "ios" ? { backgroundColor: "white" } : undefined}
+            />
+          )
         )}
       </View>
 
