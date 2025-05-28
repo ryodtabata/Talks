@@ -6,3 +6,4 @@ React Native app for sharing audio clips with friends and group chats, allows fo
 2. npm start 
 3. create profile/login 
 
+
