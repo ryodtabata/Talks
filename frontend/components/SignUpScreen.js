@@ -5,9 +5,6 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { auth, db } from "./FirebaseConfig"; 
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState("");
@@ -95,16 +92,6 @@ const SignUpScreen = () => {
     setErrorMessage("");
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      await setDoc(doc(db, "users", user.uid), {
-        name: name,
-        email: email,
-        dob: dob,
-        createdAt: new Date().toISOString(),
-      });
-
       navigation.navigate("Home");
     } catch (error) {
       

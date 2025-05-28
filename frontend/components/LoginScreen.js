@@ -8,8 +8,6 @@ import {
   Text,
   Image
 } from "react-native";
-import { auth } from "./FirebaseConfig";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -20,53 +18,14 @@ const LoginScreen = () => {
   //use states for fields 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
 
   const handleLogin = async (e) => {
-    
-    e.preventDefault();
-    // Clear previous errors
-    setErrorMessage("");
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("User signed in successfully");
-      navigation.navigate("Home"); // Navigate to Home on successful login
-    } catch (error) {
-      if (error.code === "auth/user-not-found") {
-        setErrorMessage("This email is not associated with an account.");
-      } else if (error.code === "auth/wrong-password") {
-        setErrorMessage("Incorrect password. Please try again.");
-      } else if (error.code === "auth/invalid-credential") {
-        setErrorMessage("Invalid email or password. Please check your details.");
-      }
-       else if (error.code === "auth/invalid-email") {
-        setErrorMessage("Please enter a valid email.");
-      } else {
-        setErrorMessage("Authentication failed. Please try again.");
-      }
-    }
+    //nneed to update this logic, only doing frontend at the moment
   };
 
-
-
   const handleForgotPassword = async () => {
-    if (!email) {
-      setErrorMessage("Please enter your email to reset your password.");
-      return;
-    }
-    
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent! Please check your inbox.");
-    } catch (error) {
-      if (error.code === "auth/user-not-found") {
-        setErrorMessage("This email is not associated with an account.");
-      } else {
-        setErrorMessage("Error sending password reset email.");
-      }
-    }
+    //neeed to naldle this in db later
   };
 
   return (
